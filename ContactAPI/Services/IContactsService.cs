@@ -12,6 +12,6 @@ namespace ContactAPI.Services
         IEnumerable<ContactResponseDTO> FindAll();
         ContactResponseDTO FindOne(int id);
         ContactResponseDTO Insert(ContactRequestDTO contact);
-        bool Update(ContactRequestDTO contact);
+        bool Update(ContactRequestDTO contact, int id);
     }
 }

@@ -173,7 +173,8 @@ namespace ContactAPI.Controllers.Tests
         {
             //arrange
             _mockContactsService = new Mock<IContactsService>();
-            _mockContactsService.Setup(r => r.Update(It.IsAny<ContactRequestDTO>())).Returns(true);            
+            _mockContactsService.Setup(r => r.Update(It.IsAny<ContactRequestDTO>(), It.IsAny<int>())).Returns(true);
+            _mockContactsService.Setup(r => r.FindOne(It.IsAny<int>())).Returns(contactResponseDTO);
             
             var controller = new ContactsController(_mockContactsService.Object);
 
@@ -185,15 +186,15 @@ namespace ContactAPI.Controllers.Tests
                 email = "chani4lyfe@gmail.com"
             };
 
-
             //act
-            var actual = controller.Update(1, contactRequest);
+            var actual = controller.Update(contactRequest, 1);
 
 
-            //assert
-            var result = actual.Result as OkObjectResult;                
+            //assert                         
             Assert.IsNotNull(actual);
-            Assert.AreEqual("Record Updated for ID: 1", result.Value);
+            Assert.AreEqual(contactResponseDTO.name.first, actual.Value.name.first);
+            _mockContactsService.Verify(mock => mock.Update(It.IsAny<ContactRequestDTO>(), It.IsAny<int>()), Times.Once());
+            _mockContactsService.Verify(mock => mock.FindOne(It.IsAny<int>()), Times.Once());
 
         }
 
@@ -212,9 +213,8 @@ namespace ContactAPI.Controllers.Tests
                 email = "chani4lyfe@gmail.com"
             };
 
-
             //act
-            var actual = controller.Update(1, contactRequest);
+            var actual = controller.Update(contactRequest, 1);
 
 
             //assert
@@ -237,7 +237,7 @@ namespace ContactAPI.Controllers.Tests
 
 
             //assert            
-            var result = actual.Result as OkObjectResult;
+            var result = actual as OkObjectResult;
             Assert.IsNotNull(actual);
             Assert.AreEqual("Contact Successfully Deleted for ID: 1", result.Value);
         }
@@ -257,7 +257,7 @@ namespace ContactAPI.Controllers.Tests
 
 
             //assert            
-            var result = actual.Result as NotFoundObjectResult;
+            var result = actual as NotFoundObjectResult;
             Assert.IsNotNull(actual);
             Assert.AreEqual("Contact Not Found for ID: 1", result.Value);
         }

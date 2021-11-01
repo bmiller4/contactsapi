@@ -59,17 +59,17 @@ namespace ContactAPI.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult<ContactRequestDTO> Update(int id, ContactRequestDTO dto)
+        public ActionResult<ContactResponseDTO> Update(ContactRequestDTO dto, int id)
         {
-            var result = _contactsService.Update(dto);
+            var result = _contactsService.Update(dto, id);
             if (result)
-                return Ok("Record Updated for ID: " + id);
+                return _contactsService.FindOne(id);
             else
                 return NotFound("Contact Not Found for ID: " + id);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<ContactResponseDTO> Delete(int id)
+        public ActionResult Delete(int id)
         {
             var result = _contactsService.Delete(id);
             if (result > 0)

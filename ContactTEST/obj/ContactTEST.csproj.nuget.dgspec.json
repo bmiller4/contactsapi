@@ -133,6 +133,10 @@
               "target": "Package",
               "version": "[4.16.1, )"
             },
+            "NPOI": {
+              "target": "Package",
+              "version": "[2.5.5, )"
+            },
             "NUnit": {
               "target": "Package",
               "version": "[3.12.0, )"

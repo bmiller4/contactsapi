@@ -5,7 +5,6 @@ using ContactAPI.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ContactAPI.Services
 {
@@ -42,49 +41,58 @@ namespace ContactAPI.Services
         public ContactResponseDTO FindOne(int id)
         {
             ContactsEntity contactsEntity = _contactsRepo.FindOne(id);
-            if(contactsEntity == null)
+            ContactResponseDTO contactResponseDTO;
+            if (contactsEntity != null)
             {
-                return null;
+                contactResponseDTO = _contactsMapper.convertEntityToDTO(contactsEntity);
+
+                return contactResponseDTO;
             }
 
-            ContactResponseDTO contactResponseDTO = _contactsMapper.convertEntityToDTO(contactsEntity);            
-
-            return contactResponseDTO;
+            return null;            
         }
 
         public ContactResponseDTO Insert(ContactRequestDTO contact)
         {
 
-            ContactsEntity contactsEntity;
-            try
-            {
-                contactsEntity = _contactsMapper.convertRequestToEntity(contact);
+            //TODO need to rethink for bad request submission -
+            //is it even possible to send a bad request currently? (no integer id)
+            ContactsEntity contactsEntity = _contactsMapper.convertRequestToEntity(contact);            
 
-                var id = _contactsRepo.Insert(contactsEntity);
+            var id = _contactsRepo.Insert(contactsEntity);          
 
-                var foundInsert = _contactsRepo.FindOne(id);
+            var foundInsert = _contactsRepo.FindOne(id);
 
-                ContactResponseDTO contactResponseDTO = _contactsMapper.convertEntityToDTO(foundInsert);
+            ContactResponseDTO contactResponseDTO = _contactsMapper.convertEntityToDTO(foundInsert);
 
-                return contactResponseDTO;
-            } 
-            catch(Exception e)
-            {
-                return null;
-            }
+            return contactResponseDTO;
+           
                                              
         }
 
-        public bool Update(ContactRequestDTO contact)
+        public bool Update(ContactRequestDTO dto, int id)
         {
-            ContactsEntity contactsEntity = _contactsMapper.convertRequestToEntity(contact);           
 
-            return _contactsRepo.Update(contactsEntity);
+            var foundRecord = _contactsRepo.FindOne(id);
+            if(foundRecord != null)
+            {
+                var entityToUpdate = _contactsMapper.convertRequestToEntity(dto);
+                entityToUpdate.Id = id;
+                return _contactsRepo.Update(entityToUpdate);
+            }        
+
+            return false;
         }
 
         public int Delete(int id)
         {
-            int deletedId = _contactsRepo.Delete(id);
+            var recordToDelete = _contactsRepo.FindOne(id);
+           
+            if(recordToDelete != null)
+            {
+                return _contactsRepo.Delete(id);
+            }
+            
             return id;
         }
 

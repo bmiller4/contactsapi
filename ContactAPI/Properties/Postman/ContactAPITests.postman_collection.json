@@ -1,0 +1,225 @@
+{
+	"info": {
+		"_postman_id": "afa16455-5a7b-4e45-8ebe-263cac7b651f",
+		"name": "ContactAPITests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Insert Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": {\r\n      \"first\": \"Dolores\",\r\n      \"middle\": \"Westworld\",\r\n      \"last\": \"Abernathy\"\r\n    },\r\n    \"address\": {\r\n      \"street\": \"101 Farm lane\",\r\n      \"city\": \"Some farm in westworld\",\r\n      \"state\": \"Westworld\",\r\n      \"zip\": \"11111\"\r\n    },\r\n    \"phone\": [\r\n      {\r\n        \"number\": \"111-111-111\",\r\n        \"type\": \"mobile\"\r\n      },\r\n      {\r\n        \"number\": \"000-000-0000\",\r\n        \"type\": \"home\"\r\n      }\r\n    ],\r\n    \"email\": \"thismazeismine@gmail.com\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/contacts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/contacts/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"contacts",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Contacts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": {\r\n    \"first\": \"Harold\",\r\n    \"middle\": \"Francis\",\r\n    \"last\": \"Gilkey\"\r\n  },\r\n  \"address\": {\r\n    \"street\": \"8360 High Autumn Row\",\r\n    \"city\": \"Cannon\",\r\n    \"state\": \"Delaware\",\r\n    \"zip\": \"19797\"\r\n  },\r\n  \"phone\": [\r\n    {\r\n      \"number\": \"302-611-9148\",\r\n      \"type\": \"home\"\r\n    },\r\n    {\r\n      \"number\": \"302-532-9427\",\r\n      \"type\": \"mobile\"\r\n    }\r\n  ],\r\n  \"email\": \"harold.gilkey@yahoo.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/contacts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": {\r\n    \"first\": \"Harold\",\r\n    \"middle\": \"Francis\",\r\n    \"last\": \"Gilkey\"\r\n  },\r\n  \"address\": {\r\n    \"street\": \"8360 High Autumn Row\",\r\n    \"city\": \"Cannon\",\r\n    \"state\": \"Delaware\",\r\n    \"zip\": \"19797\"\r\n  },\r\n  \"phone\": [\r\n    {\r\n      \"number\": \"302-611-9148\",\r\n      \"type\": \"home\"\r\n    },\r\n    {\r\n      \"number\": \"302-532-9427\",\r\n      \"type\": \"mobile\"\r\n    }\r\n  ],\r\n  \"email\": \"harold.gilkey@yahoo.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/contacts/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"contacts",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"name\": {\r\n        \"first\": \"Brennan\",\r\n        \"middle\": \"Worth\",\r\n        \"last\": \"Miller\"\r\n    },\r\n    \"address\": {\r\n        \"street\": \"3600 West Broad Street\",\r\n        \"city\": \"Middle Earth\",\r\n        \"state\": \"New Zealand\",\r\n        \"zip\": \"23230\"\r\n    },\r\n    \"phone\": [\r\n        {\r\n            \"number\": \"540-424-8970\",\r\n            \"type\": \"mobile\"\r\n        },\r\n        {\r\n            \"number\": \"000-000-0000\",\r\n            \"type\": \"home\"\r\n        }\r\n    ],\r\n    \"email\": \"brennanm86@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/contacts/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"contacts",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

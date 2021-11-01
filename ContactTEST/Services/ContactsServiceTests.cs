@@ -141,8 +141,9 @@ namespace ContactAPI.Services.Tests
 
         [Test()]
         public void FindOneNotFoundTest()
-        {           
-            //arrange
+        {
+            //arrange                                
+            _mockContactsRepo.Setup(r => r.FindOne(It.IsAny<int>()));
             var service = new ContactsService(_mockContactsRepo.Object, _mockContactsMapper.Object);
 
             //act
@@ -177,11 +178,18 @@ namespace ContactAPI.Services.Tests
             Assert.IsNotNull(actual);
             Assert.AreEqual(contactResponseDTO, actual);
         }
+        
 
         [Test()]
-        public void InsertBadRequestTest()
+        public void UpdateHappyPathTest()
         {
-          
+
+
+            //arrange
+            _mockContactsRepo.Setup(r => r.FindOne(It.IsAny<int>())).Returns(contactsEntity);
+            _mockContactsRepo.Setup(r => r.Update(It.IsAny<ContactsEntity>())).Returns(true);
+           
+
             var service = new ContactsService(_mockContactsRepo.Object, _mockContactsMapper.Object);
 
             ContactRequestDTO contactRequest = new ContactRequestDTO
@@ -193,22 +201,73 @@ namespace ContactAPI.Services.Tests
             };
 
             //act
-            var actual = service.Insert(contactRequest);
+            var actual = service.Update(contactRequest, 1);
 
             //assert
-            Assert.IsNull(actual);
+            _mockContactsRepo.Verify(mock => mock.Update(contactsEntity), Times.Once());
+            Assert.IsTrue(actual);           
         }
 
         [Test()]
-        public void UpdateTest()
+        public void UpdateNotFoundTest()
         {
-            Assert.Fail();
+
+            //arrange                        
+            var service = new ContactsService(_mockContactsRepo.Object, _mockContactsMapper.Object);
+            _mockContactsRepo.Setup(r => r.FindOne(It.IsAny<int>()));
+
+            ContactRequestDTO contactRequest = new ContactRequestDTO
+            {
+                name = name,
+                address = address,
+                phone = phones,
+                email = "chani4lyfe@gmail.com"
+            };
+
+            //act
+            var actual = service.Update(contactRequest, 1);
+
+            //assert
+            _mockContactsRepo.Verify(mock => mock.Update(It.IsAny<ContactsEntity>()), Times.Never());          
+            Assert.IsFalse(actual);            
         }
 
         [Test()]
-        public void DeleteTest()
+        public void DeleteHappyPathTest()
         {
-            Assert.Fail();
+
+            //arrange
+            _mockContactsRepo.Setup(r => r.FindOne(It.IsAny<int>())).Returns(contactsEntity);
+            _mockContactsRepo.Setup(r => r.Delete(It.IsAny<int>())).Returns(1);
+
+
+            var service = new ContactsService(_mockContactsRepo.Object, _mockContactsMapper.Object);
+
+
+            //act
+            var actual = service.Delete(1);
+
+            //assert
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(1, actual);
+            _mockContactsRepo.Verify(mock => mock.Delete(1), Times.Once());
+        }
+
+        [Test()]
+        public void DeleteNotFoundTest()
+        {
+
+            //arrange                        
+            _mockContactsRepo.Setup(r => r.FindOne(It.IsAny<int>()));
+
+
+            var service = new ContactsService(_mockContactsRepo.Object, _mockContactsMapper.Object);
+
+            //act
+            var actual = service.Delete(1);
+
+            //assert
+            _mockContactsRepo.Verify(mock => mock.Delete(It.IsAny<int>()), Times.Never());            
         }
     }
 }
